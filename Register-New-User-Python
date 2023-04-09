@@ -1,0 +1,25 @@
+# Registration new user on Kayak.com using Python+Selenium.
+
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()  #  Here we are using Chrome browser, you can use other browsers
+  driver.get("https://www.kayak.com/")
+    driver.find_element(By.XPATH, "//a[text()='Zarejestruj się']").click()  # Registration
+    driver.find_element(By.NAME, "firstName").send_keys("Jan")  # Introducing a name
+    driver.find_element(By.NAME, "lastName").send_keys("Kowalski") # Introducing a surname
+    driver.find_element(By.NAME, "email").send_keys("jan.kowalski@example.com")  # Introducing adres e-mail
+    driver.find_element(By.NAME, "password").send_keys("haslo123")  # Password
+    driver.find_element(By.XPATH, "//span[text()='Prywatne konto']").click()  # Option to select "Private account".
+    
+      driver.find_element(By.NAME, "termsOfService").click() # Acceptance of terms and conditions
+      driver.find_element(By.XPATH, "//button[text()='Zarejestruj się']").click() # Clicking on the "Register" button
+
+# Waiting for registration confirmation
+WebDriverWait(driver, 10).until(EC.url_contains("mytrips"))  # Waiting for the URL to change to "/mytrips"
+
+assert "Moje podróże" in driver.title # Verification of correct user registration
+driver.quit()
